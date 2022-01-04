@@ -1,0 +1,1 @@
+The code for a static website for sound visualiing (spectrums).

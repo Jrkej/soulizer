@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Meta Information about the website-->
+    <link rel="icon" href="assets/logo.png">
+    <meta name="soulizer" content="A A site to save your progress" />
+    <meta name="author" content="jrke" />
+    <meta name="keywords" content="Akshat" />
+    <meta name="keywords" content="study" />
+    <meta name="keywords" content="github" />
+
+    <title id="title">{{ song }}</title>
+    <script type="text/javascript" src="./js/p5.js"></script>
+    <script type="text/javascript" src="./js/p5.sound.js"></script>
+    <link rel="stylesheet" href="./css/buttons.css">
+</head>
+<body>
+    <div style="display: flex;">
+        <input type="file" id="upload" accept="audio/*">
+        <button onclick="serve()">load</button>
+        <button id="fill" onclick="fillSwap()">Fill</button>
+    </div>
+    <div style="display:flex;">
+        <p>Click on canvas to play/pause,&nbsp</p>
+        <p>Movement Slider:</p>
+        <input id="slider" type="range" min="50" max="500" value="300" class="slider" style="margin-left: 10px;">
+    </div>
+</body>
+    <script src="./js/uploader.js"></script>
+    <script src="./js/visualizerline.js"></script>
+</html>
