@@ -30,4 +30,5 @@ function serve() {
     reload()
     document.getElementById("upload").files = [];
 }
+
 document.getElementById("upload").addEventListener("change", handleFiles, false);

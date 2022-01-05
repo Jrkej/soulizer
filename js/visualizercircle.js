@@ -13,9 +13,15 @@ function preload() {
     if (params.get('url') != null) {
         name = params.get('url')
     }
-    song = loadSound(name)
-    console.log(song)
-    document.getElementById("title").innerHTML = "default.mp3";
+    if (params.get('name') != null) {
+        name = params.get('name')
+        loadLink(name)
+    }
+    else {
+        song = loadSound(name)
+        console.log(song)
+        document.getElementById("title").innerHTML = "default.mp3";
+    }
 }
 
 
@@ -52,6 +58,7 @@ function draw() {
     if (nofill) noFill()
     else fill(energy)
     translate(width / 2, height / 2)
+    song.setVolume(document.getElementById("vol").value/100)
 
     var wave = fft.waveform()
     for (var m = -1; m <= 1; m+= 2) {
@@ -117,7 +124,7 @@ function mouseClicked(e) {
     let canvas = document.getElementById("defaultCanvas0")
     let r = canvas.getBoundingClientRect()
 
-    if (e.pageX > r.x && e.pageX < r.x + r.width && e.pageY > r.y && e.pageY < r.y + r.height) {
+    if (e.clientX > r.x && e.clientX < r.x + r.width && e.clientY > r.y && e.clientY < r.y + r.height) {
         invert()
     }
 }

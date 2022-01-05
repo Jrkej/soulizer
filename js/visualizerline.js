@@ -2,6 +2,7 @@ var song
 var fft
 var neons = []
 var nofill = true
+var vol = 1
 
 function preload() {
     const params = new URLSearchParams(window.location.search);
@@ -9,9 +10,15 @@ function preload() {
     if (params.get('url') != null) {
         name = params.get('url')
     }
-    song = loadSound(name)
-    console.log(song)
-    document.getElementById("title").innerHTML = "default.mp3";
+    if (params.get('name') != null) {
+        name = params.get('name')
+        loadLink(name)
+    }
+    else {
+        song = loadSound(name)
+        console.log(song)
+        document.getElementById("title").innerHTML = "default.mp3";
+    }
 }
 
 function setup() {
@@ -34,7 +41,11 @@ function draw() {
     stroke(energy)
     if (nofill) noFill()
     else fill(255)
-
+    if (keyIsPressed && key == "ArrowLeft") {
+        song.pauseTime = max(0, song.pauseTime-5)
+        console.log("volume =", vol)
+    }
+    song.setVolume(document.getElementById("vol").value/100)
     var wave = fft.waveform()
     beginShape()
     for (var i = 0; i < width; i++) {
