@@ -19,15 +19,21 @@
     <link rel="stylesheet" href="./css/buttons.css">
 </head>
 <body>
+    <font>Linear</font>
+    <br>
+    <br>
+    <br>
     <div style="display: flex;">
         <input type="file" id="upload" accept="audio/*">
-        <button onclick="serve()">load</button>
-        <button id="fill" onclick="fillSwap()">Fill</button>
+        <button onclick="serve()">Upload</button>
     </div>
     <div style="display:flex;">
         <p>Click on canvas to play/pause,&nbsp</p>
         <p>Movement Slider:</p>
         <input id="slider" type="range" min="50" max="500" value="300" class="slider" style="margin-left: 10px;">
+    </div>
+    <div style="display: flex;" id="options">
+        <p>Visuals Settings options -&nbsp</p>
     </div>
     <div style="display: flex;">
         <p>Volume:</p>
@@ -35,6 +41,6 @@
     </div>
 </body>
     <script src="./js/search.js"></script>
-    <script src="./js/uploader.js"></script>
     <script src="./js/visualizerline.js"></script>
+    <script src="./js/uploader.js"></script>
 </html>

@@ -16,19 +16,26 @@
     <title id="title">{{ song }}</title>
     <script type="text/javascript" src="./js/p5.js"></script>
     <script type="text/javascript" src="./js/p5.sound.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="./css/buttons.css">
 </head>
 <body>
+    <font>Circular</font>
+    <br>
+    <br>
+    <br>
     <input type="file" id="upload" accept="audio/*">
-    <button onclick="serve()">load</button>
-    <button id="fill" onclick="fillSwap()">Fill</button>
+    <button onclick="serve()">Upload</button>
     <p>click on canvas to play/pause</p>
+    <div style="display: flex;" id="options">
+        <p>Visuals Settings options -&nbsp</p>
+    </div>
     <div style="display: flex;">
         <p>Volume:</p>
         <input id="vol" type="range" min="0" max="100" value="90" class="slider" style="margin-left: 10px;">
     </div>
 </body>
     <script src="./js/search.js"></script>
-    <script src="./js/uploader.js"></script>
     <script src="./js/visualizercircle.js"></script>
+    <script src="./js/uploader.js"></script>
 </html>

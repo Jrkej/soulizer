@@ -1,25 +1,12 @@
 var song
 var fft
 var neons = []
-var nofill = true
+var nofill = false
 var vol = 1
+var colored = false;
+var inv = false;
+var rev = false;
 
-function preload() {
-    const params = new URLSearchParams(window.location.search);
-    var name = "./assets/default.mp3"
-    if (params.get('url') != null) {
-        name = params.get('url')
-    }
-    if (params.get('name') != null) {
-        name = params.get('name')
-        loadLink(name)
-    }
-    else {
-        song = loadSound(name)
-        console.log(song)
-        document.getElementById("title").innerHTML = "default.mp3";
-    }
-}
 
 function setup() {
     document.body.style = "overflow-x: hidden;"
@@ -35,12 +22,18 @@ function reload() {
 }
 
 function draw() {
+    updateOptions()
     fft.analyze()
     energy = fft.getEnergy(20, 200)
-    background(max(0, min(120, 255-energy)))
-    stroke(energy)
+    let a = [min(255, energy), min(255, song._prevUpdateTime), max(0, 255-energy)]
+    if (colored == false) a = [max(0, 255-energy), max(0, 255-energy), max(0, 255-energy)]
+    if (inv) a = [255-a[0], 255-a[1], 255-a[2]]
+    if (rev) a = [a[2], a[1], a[0]]
+
+    background(a)
+    stroke(255)
     if (nofill) noFill()
-    else fill(255)
+    else fill([255-a[0], 255-a[1], 255-a[2]])
     if (keyIsPressed && key == "ArrowLeft") {
         song.pauseTime = max(0, song.pauseTime-5)
         console.log("volume =", vol)

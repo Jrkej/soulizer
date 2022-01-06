@@ -1,28 +1,14 @@
 var needNeons = true
 const neonsGenerations = 5
 const firstGenerationNeons = 2000
-const boostThreshold = 225
+const boostThreshold = 210
 var song
 var fft
-var nofill = true
+var nofill = false
 var neons = []
-
-function preload() {
-    const params = new URLSearchParams(window.location.search);
-    var name = "./assets/default.mp3"
-    if (params.get('url') != null) {
-        name = params.get('url')
-    }
-    if (params.get('name') != null) {
-        name = params.get('name')
-        loadLink(name)
-    }
-    else {
-        song = loadSound(name)
-        console.log(song)
-        document.getElementById("title").innerHTML = "default.mp3";
-    }
-}
+var colored = false;
+var inv = false;
+var rev = false;
 
 
 function setup() {
@@ -51,12 +37,18 @@ function reload() {
 }
 
 function draw() {
+    updateOptions()
     fft.analyze()
     energy = fft.getEnergy(20, 200)
-    background(max(0, min(120, 255-energy)))
-    stroke(energy)
+    let a = [min(255, energy), min(255, song._prevUpdateTime), max(0, 255-energy)]
+    if (colored == false) a = [max(0, 255-energy), max(0, 255-energy), max(0, 255-energy)]
+    if (inv) a = [255-a[0], 255-a[1], 255-a[2]]
+    if (rev) a = [a[2], a[1], a[0]]
+
+    background(a)
+    stroke(255)
     if (nofill) noFill()
-    else fill(energy)
+    else fill([255-a[0], 255-a[1], 255-a[2]])
     translate(width / 2, height / 2)
     song.setVolume(document.getElementById("vol").value/100)
 
@@ -161,4 +153,12 @@ class neon {
         fill(this.color)
         ellipse(this.pos.x, this.pos.y, this.rad)
     }
+}
+async function trial() {
+    let query = "rozana"
+    let p = "https://cdn01.ytjar.xyz/get.php/f/98/CtgD91Ev4NU.mp3?cid=MTczLjI0OS4xMC4yMjJ8TkF8REU%3D&h=mT-2ofJbMlEJY08IOT8iyg&s=1641386790&n=Rozana-Full-Video-Song-Naam-Shabana-Akshay-Kumar-Taapsee-Pannu-Taher-Shabbir-I-Shreya-Rochak";
+    let url = "http://127.0.0.1:5500/"
+    let a = await fetch(p, {"method":"GET"})
+    console.log(a)
+
 }
