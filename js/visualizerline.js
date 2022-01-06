@@ -23,8 +23,10 @@ function reload() {
 
 function draw() {
     updateOptions()
+    let volume = document.getElementById("vol").value/100
+    song.setVolume(volume)
     fft.analyze()
-    energy = fft.getEnergy(20, 200)
+    energy = fft.getEnergy(20, 200) / volume
     let a = [min(255, energy), min(255, song._prevUpdateTime), max(0, 255-energy)]
     if (colored == false) a = [max(0, 255-energy), max(0, 255-energy), max(0, 255-energy)]
     if (inv) a = [255-a[0], 255-a[1], 255-a[2]]
@@ -34,18 +36,13 @@ function draw() {
     stroke(255)
     if (nofill) noFill()
     else fill([255-a[0], 255-a[1], 255-a[2]])
-    if (keyIsPressed && key == "ArrowLeft") {
-        song.pauseTime = max(0, song.pauseTime-5)
-        console.log("volume =", vol)
-    }
-    song.setVolume(document.getElementById("vol").value/100)
     var wave = fft.waveform()
     beginShape()
     for (var i = 0; i < width; i++) {
         var index = floor(map(i, 0, width, 0, wave.length))
 
         var x = i
-        var y = wave[index] * document.getElementById("slider").value + height / 2;
+        var y = (wave[index] / volume) * document.getElementById("slider").value + height / 2;
         vertex(x, y)
     }
     endShape()
@@ -91,3 +88,16 @@ function mouseClicked(e) {
     }
 }
 
+function jump(sec) {
+    let t = song.currentTime();
+    console.log(t)
+    t += sec
+    t = max(0, min(t, song.duration()))
+    song.jump(t)
+}
+
+function keyPressed() {
+    if (key == "ArrowLeft") jump(-5)
+    if (key == "ArrowRight") jump(5)
+    if (key == ' ')  invert()
+}

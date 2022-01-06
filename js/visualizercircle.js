@@ -38,8 +38,10 @@ function reload() {
 
 function draw() {
     updateOptions()
+    let volume = document.getElementById("vol").value/100
+    song.setVolume(volume)
     fft.analyze()
-    energy = fft.getEnergy(20, 200)
+    energy = fft.getEnergy(20, 200) / volume
     let a = [min(255, energy), min(255, song._prevUpdateTime), max(0, 255-energy)]
     if (colored == false) a = [max(0, 255-energy), max(0, 255-energy), max(0, 255-energy)]
     if (inv) a = [255-a[0], 255-a[1], 255-a[2]]
@@ -50,7 +52,6 @@ function draw() {
     if (nofill) noFill()
     else fill([255-a[0], 255-a[1], 255-a[2]])
     translate(width / 2, height / 2)
-    song.setVolume(document.getElementById("vol").value/100)
 
     var wave = fft.waveform()
     for (var m = -1; m <= 1; m+= 2) {
@@ -58,7 +59,7 @@ function draw() {
         for (var i = 0; i <= 180; i++) {
             var index = floor(map(i, 0, width, 0, wave.length))
 
-            var r = map(wave[index], -1, 1, 110, 350)
+            var r = map(wave[index] / volume, -1, 1, 110, 350)
             var x = r * sin(i)
             var y = r * cos(i)
             vertex(x * m, y)
@@ -66,7 +67,7 @@ function draw() {
         endShape()
     }
     
-    if (needNeons) {
+    if (needNeons && song.isPlaying()) {
         for (var i = 0; i < neonsGenerations; i++) {
             var n = new neon()
             neons.push(n)
@@ -154,11 +155,17 @@ class neon {
         ellipse(this.pos.x, this.pos.y, this.rad)
     }
 }
-async function trial() {
-    let query = "rozana"
-    let p = "https://cdn01.ytjar.xyz/get.php/f/98/CtgD91Ev4NU.mp3?cid=MTczLjI0OS4xMC4yMjJ8TkF8REU%3D&h=mT-2ofJbMlEJY08IOT8iyg&s=1641386790&n=Rozana-Full-Video-Song-Naam-Shabana-Akshay-Kumar-Taapsee-Pannu-Taher-Shabbir-I-Shreya-Rochak";
-    let url = "http://127.0.0.1:5500/"
-    let a = await fetch(p, {"method":"GET"})
-    console.log(a)
 
+function jump(sec) {
+    let t = song.currentTime();
+    console.log(t)
+    t += sec
+    t = max(0, min(t, song.duration()))
+    song.jump(t)
+}
+
+function keyPressed() {
+    if (key == "ArrowLeft") jump(-5)
+    if (key == "ArrowRight") jump(5)
+    if (key == ' ')  invert()
 }

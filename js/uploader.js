@@ -35,15 +35,10 @@ function preload() {
     if (params.get('url') != null) {
         name = params.get('url')
     }
-    if (params.get('name') != null) {
-        name = params.get('name')
-        loadLink(name)
-    }
-    else {
-        song = loadSound(name)
-        console.log(song)
-        document.getElementById("title").innerHTML = "default.mp3";
-    }
+    song = loadSound(name)
+    console.log(song)
+    let l = name.split("/");
+    document.getElementById("title").innerHTML = l[l.length - 1];
 }
 
 function loadOptions() {
